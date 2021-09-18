@@ -115,9 +115,13 @@
 #define MODE_PITCH 2
 #define MODE_PLAY 3
 
-#define CLOCK_LENGTH 5000
+#define CLOCK_MULTIPLIER 300
+#define CLOCK_THRESHOLD 100
 
-#define C_MAJOR_SCALE {NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A5, NOTE_B5}
+#define BIT_OVERFLOW 0b100000000
+#define LAST_BIT 0b10000000
+
+#define C_MAJOR_SCALE {NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A6, NOTE_B6}
 
 int scale[] = C_MAJOR_SCALE;
 
@@ -166,8 +170,8 @@ int pitchHighlighted = 1;
 
 int pressed = 0;
 
-int sequence = 0b0;//0b01010101;
-int notes[] = {0, 0, 0, 0, 0, 0, 0, 0};
+int sequence = 0b11111;
+int notes[] = {0, 0, 0, 1, 2, 0, 0, 0};
 
 int cursor = 0b1;
 
@@ -187,7 +191,7 @@ void ledStrip(int highlighted)
   digitalWrite(LED_4, (~highlighted) & 0b10000);
   digitalWrite(LED_5, (~highlighted) & 0b100000);
   digitalWrite(LED_6, (~highlighted) & 0b1000000);
-  digitalWrite(LED_7, (~highlighted) & 0b10000000);
+  digitalWrite(LED_7, (~highlighted) & LAST_BIT);
 
   } else {
   digitalWrite(LED_0, highlighted & 0b1);
@@ -197,7 +201,7 @@ void ledStrip(int highlighted)
   digitalWrite(LED_4, highlighted & 0b10000);
   digitalWrite(LED_5, highlighted & 0b100000);
   digitalWrite(LED_6, highlighted & 0b1000000);
-  digitalWrite(LED_7, highlighted & 0b10000000);
+  digitalWrite(LED_7, highlighted & LAST_BIT);
   }
 }
 
@@ -217,7 +221,7 @@ void release()
 int indexFromByte(int byte)
 {
   switch (byte) {
-    case 0b10000000:
+    case LAST_BIT:
       return 7;
     case 0b1000000:
       return 6;
@@ -238,24 +242,52 @@ int indexFromByte(int byte)
   }
 }
 
+int clockEnd()
+{
+  return maxLength * CLOCK_MULTIPLIER;
+}
+
+int shiftLeft(int highlighted)
+{
+  int newHighlighted = highlighted >> 1;
+  if (newHighlighted <= 0)
+  {
+    return LAST_BIT;
+  }
+  return newHighlighted;
+}
+
+int shiftRight(int highlighted)
+{
+  int newHighlighted = highlighted << 1;
+  if (newHighlighted >= BIT_OVERFLOW)
+  {
+    return 0b1;
+  }
+  return newHighlighted;
+}
+
+void readTempo()
+{
+  int newMaxLength = map(analogRead(POT_PIN), 0, 1024, 0, 10);
+  if (newMaxLength != maxLength) {
+    maxLength = newMaxLength;
+  }
+}
+
 void loop()
 {
   red = digitalRead(RED_BTN);
   blue = digitalRead(BLUE_BTN);
   yellow = digitalRead(YELLOW_BTN);
   green = digitalRead(GREEN_BTN);
-  int newMaxLength = map(analogRead(POT_PIN), 0, 1024, 0, 10);
-  if (newMaxLength != maxLength) {
-    // Serial.print("Tempo changed ");
-    // Serial.println(newMaxLength);
-    maxLength = newMaxLength;
-  }
 
   switch (mode)
   {
   case MODE_SEQUENCER:
     digitalWrite(YELLOW_LED, HIGH);
     digitalWrite(GREEN_LED, HIGH);
+    readTempo();
 
     ledStrip(sequenceHighlighted);
 
@@ -279,20 +311,12 @@ void loop()
     if (isPressed(blue))
     {
       pressed = 1;
-      sequenceHighlighted = sequenceHighlighted << 1;
-      if (sequenceHighlighted >= 0b100000000)
-      {
-        sequenceHighlighted = 0b1;
-      }
+      sequenceHighlighted = shiftRight(sequenceHighlighted);
     }
     if (isPressed(yellow))
     {
       pressed = 1;
-      sequenceHighlighted = sequenceHighlighted >> 1;
-      if (sequenceHighlighted <= 0)
-      {
-        sequenceHighlighted = 0b10000000;
-      }
+      sequenceHighlighted = shiftLeft(sequenceHighlighted);
     }
     if (isPressed(green))
     {
@@ -332,20 +356,12 @@ void loop()
     if (isPressed(blue))
     {
       pressed = 1;
-      pitchHighlighted = pitchHighlighted << 1;
-      if (pitchHighlighted >= 0b100000000)
-      {
-        pitchHighlighted = 0b1;
-      }
+      pitchHighlighted = shiftRight(pitchHighlighted);
     }
     if (isPressed(yellow))
     {
       pressed = 1;
-      pitchHighlighted = pitchHighlighted >> 1;
-      if (pitchHighlighted <= 0)
-      {
-        pitchHighlighted = 0b10000000;
-      }
+      pitchHighlighted = shiftLeft(pitchHighlighted);
     }
     if (isPressed(green))
     {
@@ -367,18 +383,22 @@ void loop()
     }
     ledStrip(cursor & sequence);
     clock += 1;
-    if (clock >= maxLength * 300) {
+    if (clock >= clockEnd()) {
       clock = 0;
       cursor = cursor << 1;
-      if (cursor >= 0b100000000)
+      if (cursor >= BIT_OVERFLOW)
       {
         cursor = 0b1;
       }
     }
 
+    if (clock > (clockEnd()) - CLOCK_THRESHOLD) {
+        noTone(BUZZ_PIN);
+    }
+
     if (clock == 0) {
       if ((cursor & sequence) > 0) {
-        int noteIndex = notes[indexFromByte(cursor << 1)];
+        int noteIndex = notes[indexFromByte(cursor)];
         tone(BUZZ_PIN, scale[noteIndex]);
       } else {
         noTone(BUZZ_PIN);
