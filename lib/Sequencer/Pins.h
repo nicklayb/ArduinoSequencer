@@ -22,4 +22,7 @@
 #define BLUE_BTN 11
 #define GREEN_BTN 10
 
+#define CLK_PIN BLUE_BTN
+#define DT_PIN YELLOW_BTN
+
 #endif

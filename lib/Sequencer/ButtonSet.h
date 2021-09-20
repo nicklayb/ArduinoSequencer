@@ -2,10 +2,11 @@
 #define SEQUENCER_BUTTON_SET_H
 
 #include <Button.h>
+#include <Controller.h>
 
 namespace Sequencer
 {
-  class ButtonSet
+  class ButtonSet : public Controller
   {
     private:
       Button* modeSelect;
@@ -19,7 +20,6 @@ namespace Sequencer
       bool rightPressed();
       bool leftPressed();
       bool modeSelectPressed();
-      bool anyPressed();
       void read();
       void release();
   };

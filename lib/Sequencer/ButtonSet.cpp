@@ -29,11 +29,6 @@ bool Sequencer::ButtonSet::modeSelectPressed()
   return this->modeSelect->isPressed();
 };
 
-bool Sequencer::ButtonSet::anyPressed()
-{
-  return this->modeSelectPressed() || this->playPressed() || this->leftPressed() || this->rightPressed();
-}
-
 void Sequencer::ButtonSet::read()
 {
   this->modeSelect->read();

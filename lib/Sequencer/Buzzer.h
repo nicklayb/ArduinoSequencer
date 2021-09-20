@@ -7,6 +7,7 @@ namespace Sequencer
   {
     private:
       int pin;
+      bool silenced = false;
 
     public:
       Buzzer(int pin);
@@ -14,6 +15,7 @@ namespace Sequencer
       void buzz(int frequency, int duration);
       void buzz(int* frequencies, int duration);
       void stop();
+      void silence();
   };
 }
 

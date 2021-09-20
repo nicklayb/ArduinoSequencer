@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ButtonSet.h>
+#include <Rotary.h>
 #include <Cursor.h>
 #include <Constants.h>
 #include <Pitches.h>
@@ -7,26 +8,25 @@
 #include <LedStrip.h>
 #include <Pins.h>
 #include <Buzzer.h>
+#include <Controller.h>
 
 int scale[] = C_MAJOR_SCALE;
 int leds[] = {LED_0, LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7};
 
-Sequencer::ButtonSet *buttons;
+Sequencer::Controller *controller;
 Sequencer::Cursor sequenceCursor(0b1);
 Sequencer::Cursor cursor(0b1);
 Sequencer::Cursor pitchCursor(0b1);
 Sequencer::Clock *clock;
 Sequencer::LedStrip *ledStrip;
-Sequencer::Buzzer* buzzer;
+Sequencer::Buzzer *buzzer;
 
-int mode = MODE_SEQUENCER;
+byte mode = MODE_SEQUENCER;
 
-int sequenceIndex = 0;
+byte sequenceIndex = 0;
 
-int pressed = 0;
-
-int sequence = 0b11111111;
-int notes[] = {0, 1, 2, 3, 4, 5, 6, 5};
+byte sequence = 0b11111111;
+byte notes[] = {0, 1, 2, 3, 4, 5, 6, 5};
 
 void readTempo()
 {
@@ -38,13 +38,12 @@ void setup()
 {
   pinMode(BUZZ_PIN, OUTPUT);
 
-
   clock = new Sequencer::Clock();
   clock->setThreshold(CLOCK_THRESHOLD);
-  buttons = new Sequencer::ButtonSet(RED_BTN, YELLOW_BTN, BLUE_BTN, GREEN_BTN);
+  controller = new Sequencer::Rotary(GREEN_BTN, CLK_PIN, DT_PIN, RED_BTN);
+
   ledStrip = new Sequencer::LedStrip(leds);
   buzzer = new Sequencer::Buzzer(BUZZ_PIN);
-
   buzzer->buzz(scale, 200);
 }
 
@@ -53,7 +52,7 @@ void handleSequencer()
 
   ledStrip->lightUp(sequenceCursor.getPosition());
 
-  if (buttons->modeSelectPressed())
+  if (controller->modeSelectPressed())
   {
     mode = MODE_PITCH;
     sequenceIndex = sequenceCursor.bitToIndex();
@@ -69,15 +68,15 @@ void handleSequencer()
     }
   }
 
-  if (buttons->rightPressed())
+  if (controller->rightPressed())
   {
     sequenceCursor.forward();
   }
-  if (buttons->leftPressed())
+  if (controller->leftPressed())
   {
     sequenceCursor.backward();
   }
-  if (buttons->playPressed())
+  if (controller->playPressed())
   {
     mode = MODE_PLAY;
   }
@@ -88,11 +87,11 @@ void handlePitch()
 
   ledStrip->lightUp(pitchCursor.getPosition(), true);
 
-  if (buttons->modeSelectPressed())
+  if (controller->modeSelectPressed())
   {
     mode = MODE_SEQUENCER;
 
-    int noteIndex = pitchCursor.bitToIndex();
+    byte noteIndex = pitchCursor.bitToIndex();
 
     if (noteIndex > 0)
     {
@@ -109,19 +108,19 @@ void handlePitch()
     }
   }
 
-  if (buttons->playPressed())
+  if (controller->playPressed())
   {
-    int noteIndex = pitchCursor.bitToIndex() - 1;
+    byte noteIndex = pitchCursor.bitToIndex() - 1;
     if (noteIndex >= 0)
     {
       buzzer->buzz(scale[noteIndex], 200);
     }
   }
-  if (buttons->rightPressed())
+  if (controller->rightPressed())
   {
     pitchCursor.forward();
   }
-  if (buttons->leftPressed())
+  if (controller->leftPressed())
   {
     pitchCursor.backward();
   }
@@ -129,7 +128,7 @@ void handlePitch()
 
 void handlePlay()
 {
-  if (buttons->anyPressed())
+  if (controller->modeSelectPressed() || controller->playPressed())
   {
     cursor.reset();
     clock->reset();
@@ -168,7 +167,7 @@ void handlePlay()
 
 void loop()
 {
-  buttons->read();
+  controller->read();
   readTempo();
 
   switch (mode)
@@ -185,5 +184,5 @@ void loop()
     handlePlay();
     break;
   }
-  buttons->release();
+  controller->release();
 }

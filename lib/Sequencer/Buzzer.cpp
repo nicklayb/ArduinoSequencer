@@ -9,7 +9,7 @@ Sequencer::Buzzer::Buzzer(int pin)
 
 void Sequencer::Buzzer::buzz(int frequency)
 {
-  tone(this->pin, frequency);
+  if (!this->silenced) tone(this->pin, frequency);
 };
 
 void Sequencer::Buzzer::buzz(int* frequencies, int duration)
@@ -24,10 +24,15 @@ void Sequencer::Buzzer::buzz(int* frequencies, int duration)
 
 void Sequencer::Buzzer::buzz(int frequency, int duration)
 {
-  tone(this->pin, frequency, duration);
+  if (!this->silenced) tone(this->pin, frequency, duration);
 };
 
 void Sequencer::Buzzer::stop()
 {
-  noTone(this->pin);
+  if (!this->silenced) noTone(this->pin);
 };
+
+void Sequencer::Buzzer::silence()
+{
+  this->silenced = true;
+}
