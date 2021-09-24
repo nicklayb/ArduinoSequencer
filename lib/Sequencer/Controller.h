@@ -5,13 +5,14 @@ namespace Sequencer
 {
   class Controller
   {
-    public:
-      virtual bool modeSelectPressed();
-      virtual bool leftPressed();
-      virtual bool rightPressed();
-      virtual bool playPressed();
-      virtual void read();
-      virtual void release();
+  public:
+    virtual bool modeSelectPressed();
+    virtual bool leftPressed();
+    virtual bool rightPressed();
+    virtual bool playPressed();
+    virtual void read();
+    virtual void release();
+    virtual int readTempo();
   };
 }
 

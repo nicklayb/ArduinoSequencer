@@ -93,7 +93,12 @@
 
 #define C_MAJOR_SCALE                                             \
   {                                                               \
-    NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A6, NOTE_B6 \
+    NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A5, NOTE_B5 \
+  }
+
+#define F_MAJOR_SCALE                                              \
+  {                                                                \
+    NOTE_F5, NOTE_G5, NOTE_A5, NOTE_AS5, NOTE_C6, NOTE_D6, NOTE_E6 \
   }
 
 #endif

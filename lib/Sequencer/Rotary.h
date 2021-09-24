@@ -2,36 +2,28 @@
 #define SEQUENCER_ROTARY_H
 #include <Controller.h>
 #include <Button.h>
-#include <Encoder.h>
-
-#define STALE 2;
-#define FORWARD 1;
-#define BACKWARD 0;
+#include <Potentiometer.h>
+#include <RotaryEncoder.h>
 
 namespace Sequencer
 {
   class Rotary : public Controller
   {
-    private:
-      Button* playButton;
-      Button* menuButton;
-      Encoder* encoder;
-      int clkPin;
-      int dtPin;
-      int clickPin;
-      int rotaryState = STALE;
-      int previousClk = 0;
-      int previousInterim = 0;
-      void decodeValues(int clkValue, int dtValue);
+  private:
+    Button *playButton;
+    Button *menuButton;
+    Potentiometer *tempoPotentiometer;
+    RotaryEncoder *rotaryEncoder;
 
-    public:
-      Rotary(int playButtonPin, int clkPin, int dtPin, int clickPin);
-      bool modeSelectPressed();
-      bool leftPressed();
-      bool rightPressed();
-      bool playPressed();
-      void read();
-      void release();
+  public:
+    Rotary(int playButtonPin, int clkPin, int dtPin, int clickPin, int tempoPotPin);
+    bool modeSelectPressed();
+    bool leftPressed();
+    bool rightPressed();
+    bool playPressed();
+    void read();
+    void release();
+    int readTempo();
   };
 }
 

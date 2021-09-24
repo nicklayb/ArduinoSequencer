@@ -1,12 +1,16 @@
 #include <ButtonSet.h>
 #include <Button.h>
+#include <Potentiometer.h>
 
-Sequencer::ButtonSet::ButtonSet(int modeSelectPin, int leftPin, int rightPin, int playPin)
+Sequencer::PotentiometerMap potMap{.outMinimum = 3, .outMaximum = 20};
+
+Sequencer::ButtonSet::ButtonSet(int modeSelectPin, int leftPin, int rightPin, int playPin, int tempoPotPin)
 {
   this->modeSelect = new Button(modeSelectPin);
   this->left = new Button(leftPin);
   this->right = new Button(rightPin);
   this->play = new Button(playPin);
+  this->tempoPotentiometer = new Sequencer::Potentiometer(tempoPotPin, potMap);
 };
 
 bool Sequencer::ButtonSet::playPressed()
@@ -44,3 +48,8 @@ void Sequencer::ButtonSet::release()
   this->left->release();
   this->right->release();
 };
+
+int Sequencer::ButtonSet::readTempo()
+{
+  return this->tempoPotentiometer->read();
+}

@@ -1,15 +1,15 @@
 #include <Rotary.h>
 #include <Arduino.h>
+#include <Potentiometer.h>
 
-Sequencer::Rotary::Rotary(int playButtonPin, int clkPin, int dtPin, int clickPin)
+Sequencer::PotentiometerMap potMap{.outMinimum = 3, .outMaximum = 20};
+
+Sequencer::Rotary::Rotary(int playButtonPin, int clkPin, int dtPin, int clickPin, int tempoPotPin)
 {
   this->playButton = new Button(playButtonPin);
   this->menuButton = new Button(clickPin, INPUT_PULLUP);
-  this->clkPin = clkPin;
-  this->dtPin = dtPin;
-
-  pinMode(this->clkPin, INPUT);
-  pinMode(this->dtPin, INPUT);
+  this->rotaryEncoder = new RotaryEncoder(clkPin, dtPin);
+  this->tempoPotentiometer = new Potentiometer(tempoPotPin, potMap);
 }
 
 bool Sequencer::Rotary::modeSelectPressed()
@@ -19,12 +19,12 @@ bool Sequencer::Rotary::modeSelectPressed()
 
 bool Sequencer::Rotary::leftPressed()
 {
-  return this->rotaryState == FORWARD;
+  return this->rotaryEncoder->getState() == Forward;
 };
 
 bool Sequencer::Rotary::rightPressed()
 {
-  return this->rotaryState == BACKWARD;
+  return this->rotaryEncoder->getState() == Backward;
 };
 
 bool Sequencer::Rotary::playPressed()
@@ -36,37 +36,17 @@ void Sequencer::Rotary::read()
 {
   this->playButton->read();
   this->menuButton->read();
-
-  int clkValue = digitalRead(this->clkPin);
-
-  if (clkValue != this->previousClk)
-  {
-    this->previousInterim = clkValue;
-  }
-  else
-  {
-    if (clkValue != this->previousInterim)
-    {
-      this->previousInterim = clkValue;
-      int dtValue = digitalRead(this->dtPin);
-
-      if (clkValue != dtValue)
-      {
-        this->rotaryState = BACKWARD;
-      }
-      else
-      {
-        this->rotaryState = FORWARD;
-      }
-
-      this->previousClk = clkValue;
-    }
-  }
+  this->rotaryEncoder->read();
 };
 
 void Sequencer::Rotary::release()
 {
   this->playButton->release();
   this->menuButton->release();
-  this->rotaryState = STALE;
+  this->rotaryEncoder->release();
 };
+
+int Sequencer::Rotary::readTempo()
+{
+  return this->tempoPotentiometer->read();
+}

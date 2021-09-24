@@ -7,13 +7,13 @@ namespace Sequencer
 {
   class LedStrip
   {
-    private:
-      int leds[STRIP_LENGTH];
+  private:
+    int leds[STRIP_LENGTH];
 
-    public:
-      LedStrip(int leds[STRIP_LENGTH]);
-      void lightUp(int byte);
-      void lightUp(int byte, bool inverted);
+  public:
+    LedStrip(int leds[STRIP_LENGTH]);
+    void lightUp(int byte);
+    void lightUp(int byte, bool inverted);
   };
 }
 

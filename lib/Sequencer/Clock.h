@@ -5,20 +5,20 @@ namespace Sequencer
 {
   class Clock
   {
-    private:
-      int clock = 0;
-      int maximum;
-      int threshold;
+  private:
+    int clock = 0;
+    int maximum;
+    int threshold;
 
-    public:
-      Clock();
-      void setMaximum(int maximum);
-      void setThreshold(int threshold);
-      void tick();
-      bool reachedMaximum();
-      bool reachedThreshold();
-      void reset();
-      bool justStarted();
+  public:
+    Clock();
+    void setMaximum(int maximum);
+    void setThreshold(int threshold);
+    void tick();
+    bool reachedMaximum();
+    bool reachedThreshold();
+    void reset();
+    bool justStarted();
   };
 }
 
