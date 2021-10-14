@@ -5,6 +5,7 @@
 #include <LedStrip.h>
 #include <Pins.h>
 #include <Buzzer.h>
+#include <MidiOutput.h>
 #include <Controller.h>
 #include <Application.h>
 
@@ -17,8 +18,9 @@ void setup()
 {
   Sequencer::Controller *controller = new Sequencer::Rotary(GREEN_BTN, CLK_PIN, DT_PIN, RED_BTN, POT_PIN);
   Sequencer::LedStrip *ledStrip = new Sequencer::LedStrip(leds);
-  Sequencer::Buzzer *buzzer = new Sequencer::Buzzer(BUZZ_PIN);
-  application = new Sequencer::Application(scale, ledStrip, controller, buzzer);
+  //Sequencer::Buzzer *buzzer = new Sequencer::Buzzer(BUZZ_PIN);
+  Sequencer::MidiOutput *midiOut = new Sequencer::MidiOutput(SERIAL_TX);
+  application = new Sequencer::Application(scale, ledStrip, controller, midiOut);
 }
 
 void loop()

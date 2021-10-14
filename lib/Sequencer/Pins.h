@@ -13,7 +13,8 @@
 #define YELLOW_LED 20
 #define GREEN_LED 21
 
-#define BUZZ_PIN 1
+#define SERIAL_TX 1
+#define BUZZ_PIN SERIAL_TX
 
 #define POT_PIN A0
 
