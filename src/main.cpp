@@ -6,6 +6,8 @@
 #include <Pins.h>
 #include <Buzzer.h>
 #include <MidiOutput.h>
+#include <MultiNoiseMaker.h>
+#include <ControlVoltage.h>
 #include <Controller.h>
 #include <Application.h>
 
@@ -18,9 +20,10 @@ void setup()
 {
   Sequencer::Controller *controller = new Sequencer::Rotary(GREEN_BTN, CLK_PIN, DT_PIN, RED_BTN, POT_PIN);
   Sequencer::LedStrip *ledStrip = new Sequencer::LedStrip(leds);
-  //Sequencer::Buzzer *buzzer = new Sequencer::Buzzer(BUZZ_PIN);
   Sequencer::MidiOutput *midiOut = new Sequencer::MidiOutput(SERIAL_TX);
-  application = new Sequencer::Application(scale, ledStrip, controller, midiOut);
+  Sequencer::ControlVoltage *controlVoltage = new Sequencer::ControlVoltage(DIGITAL_ANALOG_CONVERTER_1, 15, 15);
+  Sequencer::MultiNoiseMaker *noiseMaker = new Sequencer::MultiNoiseMaker(midiOut, controlVoltage);
+  application = new Sequencer::Application(scale, ledStrip, controller, noiseMaker);
 }
 
 void loop()

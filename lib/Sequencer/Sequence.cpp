@@ -1,4 +1,5 @@
 #include <Sequence.h>
+#include <Pitches.h>
 
 Sequencer::Sequence::Sequence(int length)
 {
@@ -17,12 +18,12 @@ void Sequencer::Sequence::initialize()
   this->cursor = new Sequencer::Cursor(0b1, currentLength);
   for (int i = 0; i < this->length; i++)
   {
-    this->sequence = this->sequence & currentPosition;
+    this->sequence = this->sequence | currentPosition;
     currentPosition = currentPosition << 1;
   }
   for (int i = 0; i < MAX_NOTES; i++)
   {
-    this->notes[i] = 0;
+    this->notes[i] = NOTE_C1;
   }
 }
 
