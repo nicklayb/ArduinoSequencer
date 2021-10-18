@@ -16,9 +16,10 @@ namespace Sequencer
 
   public:
     MidiOutput(int messagePin);
-    void makeNoise(int frequency, int duration);
-    void makeNoise(int frequency);
-    void stopNoise();
+    void makeNoise(int midiNote, int duration);
+    void makeNoise(int midiNote);
+    void fallThresholdReached();
+    void riseThresholdReached();
   };
 }
 

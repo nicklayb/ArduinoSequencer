@@ -32,7 +32,7 @@ void Application::loop()
   if (newMode != NULL)
   {
     this->mode = newMode;
-    this->noiseMaker->stopNoise();
+    this->noiseMaker->fallThresholdReached();
   }
 
   this->controller->release();

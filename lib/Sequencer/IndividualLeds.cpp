@@ -1,7 +1,7 @@
-#include <LedStrip.h>
+#include <IndividualLeds.h>
 #include <Arduino.h>
 
-Sequencer::LedStrip::LedStrip(int leds[STRIP_LENGTH])
+Sequencer::IndividualLeds::IndividualLeds(int leds[STRIP_LENGTH])
 {
   for (int i = 0; i < STRIP_LENGTH; i++)
   {
@@ -10,12 +10,12 @@ Sequencer::LedStrip::LedStrip(int leds[STRIP_LENGTH])
   }
 };
 
-void Sequencer::LedStrip::lightUp(int byte)
+void Sequencer::IndividualLeds::lightUp(int byte)
 {
   this->lightUp(byte, false);
 };
 
-void Sequencer::LedStrip::lightUp(int byte, bool inverted)
+void Sequencer::IndividualLeds::lightUp(int byte, bool inverted)
 {
   int compareByte = 0b1;
   byte = inverted ? ~byte : byte;

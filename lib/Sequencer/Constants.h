@@ -6,7 +6,7 @@
 #define MODE_PLAY 3
 
 #define CLOCK_MULTIPLIER 100
-#define CLOCK_THRESHOLD 40
+#define CLOCK_THRESHOLD 10
 
 #define SCALE_LENGTH 7
 

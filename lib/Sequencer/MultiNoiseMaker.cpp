@@ -6,20 +6,26 @@ Sequencer::MultiNoiseMaker::MultiNoiseMaker(Sequencer::NoiseMaker *left, Sequenc
   this->right = right;
 }
 
-void Sequencer::MultiNoiseMaker::makeNoise(int frequency, int duration)
+void Sequencer::MultiNoiseMaker::makeNoise(int midiNote, int duration)
 {
-  this->left->makeNoise(frequency, duration);
-  this->right->makeNoise(frequency, duration);
+  this->left->makeNoise(midiNote, duration);
+  this->right->makeNoise(midiNote, duration);
 };
 
-void Sequencer::MultiNoiseMaker::makeNoise(int frequency)
+void Sequencer::MultiNoiseMaker::makeNoise(int midiNote)
 {
-  this->left->makeNoise(frequency);
-  this->right->makeNoise(frequency);
+  this->left->makeNoise(midiNote);
+  this->right->makeNoise(midiNote);
 };
 
-void Sequencer::MultiNoiseMaker::stopNoise()
+void Sequencer::MultiNoiseMaker::fallThresholdReached()
 {
-  this->left->stopNoise();
-  this->right->stopNoise();
+  this->left->fallThresholdReached();
+  this->right->fallThresholdReached();
+};
+
+void Sequencer::MultiNoiseMaker::riseThresholdReached()
+{
+  this->left->riseThresholdReached();
+  this->right->riseThresholdReached();
 };

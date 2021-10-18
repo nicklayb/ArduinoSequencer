@@ -1,6 +1,7 @@
 #ifndef SEQUENCE_CONTROL_VOLTAGE_H
 #define SEQUENCE_CONTROL_VOLTAGE_H
 
+#include <MCP48xx.h>
 #include <NoiseMaker.h>
 
 namespace Sequencer
@@ -8,20 +9,22 @@ namespace Sequencer
   class ControlVoltage : public NoiseMaker
   {
   private:
-    int digitalAnalogPin;
+    MCP4822 *dac;
     int triggerPin;
     int gatePin;
-    void setVoltage(bool channel, bool boostGain, unsigned int milliVolt);
-    void writeDigitalAnalogPin(int value);
+    void setVoltage(bool channel, unsigned int milliVolt);
     void setVelocity(unsigned int milliVolt);
     void setNote(int midiMessage);
-    unsigned int midiMessageToMilliVolt(int midiMessage);
+    void initDac(int digitalAnalogPin);
+    void setGate(int value);
+    void setTrigger(int value);
 
   public:
     ControlVoltage(int digitalAnalogPin, int triggerPin, int gatePin);
-    void makeNoise(int frequency, int duration);
-    void makeNoise(int frequency);
-    void stopNoise();
+    void makeNoise(int midiNote, int duration);
+    void makeNoise(int midiNote);
+    void fallThresholdReached();
+    void riseThresholdReached();
   };
 }
 

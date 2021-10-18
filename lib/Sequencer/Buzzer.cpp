@@ -50,7 +50,9 @@ void Sequencer::Buzzer::makeNoise(int frequency, int duration)
   this->buzz(frequency, duration);
 }
 
-void Sequencer::Buzzer::stopNoise()
+void Sequencer::Buzzer::fallThresholdReached()
 {
   this->stop();
 }
+
+void Sequencer::Buzzer::riseThresholdReached() {}

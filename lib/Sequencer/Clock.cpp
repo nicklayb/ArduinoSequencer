@@ -27,9 +27,14 @@ bool Sequencer::Clock::reachedMaximum()
   return this->clock >= this->maximum;
 }
 
-bool Sequencer::Clock::reachedThreshold()
+bool Sequencer::Clock::reachedFallThreshold()
 {
   return this->clock >= (this->maximum - this->threshold);
+}
+
+bool Sequencer::Clock::reachedRiseThreshold()
+{
+  return this->clock >= (this->threshold * 2);
 }
 
 void Sequencer::Clock::reset()

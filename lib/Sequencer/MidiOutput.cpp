@@ -13,21 +13,20 @@ Sequencer::MidiOutput::MidiOutput(int messagePin)
   Serial.begin(MIDI_BAUD_RATE);
 };
 
-void Sequencer::MidiOutput::makeNoise(int frequency)
+void Sequencer::MidiOutput::makeNoise(int midiNote)
 {
-  int note = frequencyToMidiNote(frequency);
-  this->lastNote = note;
+  this->lastNote = midiNote;
   this->sendNotePressed(this->lastNote);
 };
 
-void Sequencer::MidiOutput::makeNoise(int frequency, int duration)
+void Sequencer::MidiOutput::makeNoise(int midiNote, int duration)
 {
-  this->makeNoise(frequency);
+  this->makeNoise(midiNote);
   delay(duration);
   this->sendNoteReleased(this->lastNote);
 };
 
-void Sequencer::MidiOutput::stopNoise()
+void Sequencer::MidiOutput::fallThresholdReached()
 {
   if (this->lastNote != NOTE_UNDEFINED)
   {
@@ -35,6 +34,8 @@ void Sequencer::MidiOutput::stopNoise()
   }
   this->lastNote = NOTE_UNDEFINED;
 }
+
+void Sequencer::MidiOutput::riseThresholdReached() {}
 
 void Sequencer::MidiOutput::sendNotePressed(int note)
 {

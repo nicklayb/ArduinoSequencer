@@ -16,7 +16,8 @@ namespace Sequencer
     void setThreshold(int threshold);
     void tick();
     bool reachedMaximum();
-    bool reachedThreshold();
+    bool reachedFallThreshold();
+    bool reachedRiseThreshold();
     void reset();
     bool justStarted();
   };

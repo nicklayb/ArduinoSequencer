@@ -1,5 +1,5 @@
 #include <Sequence.h>
-#include <Pitches.h>
+#include <MidiNotes.h>
 
 Sequencer::Sequence::Sequence(int length)
 {
@@ -23,7 +23,7 @@ void Sequencer::Sequence::initialize()
   }
   for (int i = 0; i < MAX_NOTES; i++)
   {
-    this->notes[i] = NOTE_C1;
+    this->notes[i] = NOTE_MIDI_C5;
   }
 }
 

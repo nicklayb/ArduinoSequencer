@@ -26,9 +26,14 @@ Sequencer::Mode<Sequencer::Application> *Sequencer::ModePlay::handle(Sequencer::
       this->cursor.forward();
     }
 
-    if (this->clock->reachedThreshold())
+    if (this->clock->reachedRiseThreshold())
     {
-      application->getNoiseMaker()->stopNoise();
+      application->getNoiseMaker()->riseThresholdReached();
+    }
+
+    if (this->clock->reachedFallThreshold())
+    {
+      application->getNoiseMaker()->fallThresholdReached();
     }
 
     if (this->clock->justStarted())
@@ -40,7 +45,7 @@ Sequencer::Mode<Sequencer::Application> *Sequencer::ModePlay::handle(Sequencer::
       }
       else
       {
-        application->getNoiseMaker()->stopNoise();
+        application->getNoiseMaker()->fallThresholdReached();
       }
     }
 

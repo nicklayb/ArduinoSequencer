@@ -6,9 +6,10 @@ namespace Sequencer
   class NoiseMaker
   {
   public:
-    virtual void makeNoise(int frequency, int duration);
-    virtual void makeNoise(int frequency);
-    virtual void stopNoise();
+    virtual void makeNoise(int midiNote, int duration);
+    virtual void makeNoise(int midiNote);
+    virtual void fallThresholdReached();
+    virtual void riseThresholdReached();
   };
 }
 

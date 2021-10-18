@@ -13,9 +13,10 @@ namespace Sequencer
 
   public:
     MultiNoiseMaker(NoiseMaker *left, NoiseMaker *right);
-    void makeNoise(int frequency, int duration);
-    void makeNoise(int frequency);
-    void stopNoise();
+    void makeNoise(int midiNote, int duration);
+    void makeNoise(int midiNote);
+    void fallThresholdReached();
+    void riseThresholdReached();
   };
 }
 

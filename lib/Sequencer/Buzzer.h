@@ -20,7 +20,8 @@ namespace Sequencer
     void silence();
     void makeNoise(int frequency);
     void makeNoise(int frequency, int duration);
-    void stopNoise();
+    void fallThresholdReached();
+    void riseThresholdReached();
   };
 }
 
