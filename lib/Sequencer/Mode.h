@@ -7,7 +7,8 @@ namespace Sequencer
   class Mode
   {
   public:
-    virtual Mode<T> *handle(T *application);
+    virtual Mode<T> *handle();
+    virtual void setupMode(T *application);
   };
 }
 

@@ -5,7 +5,6 @@
 #include <Cursor.h>
 #include <Constants.h>
 #include <Pitches.h>
-#include <Clock.h>
 #include <LedStrip.h>
 #include <Pins.h>
 #include <NoiseMaker.h>

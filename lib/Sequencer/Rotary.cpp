@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <Potentiometer.h>
 
-Sequencer::PotentiometerMap potMap{.outMinimum = 3, .outMaximum = 20};
+Sequencer::PotentiometerMap potMap{.outMinimum = 1, .outMaximum = 10};
 
 Sequencer::Rotary::Rotary(int playButtonPin, int clkPin, int dtPin, int clickPin, int tempoPotPin)
 {

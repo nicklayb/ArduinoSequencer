@@ -1,8 +1,8 @@
 #ifndef SEQUENCER_PINS_H
 #define SEQUENCER_PINS_H
 
-#define LED_0 2
-#define LED_1 3
+#define LED_0 A7
+#define LED_1 A5
 #define LED_2 4
 #define LED_3 5
 #define LED_4 6
@@ -16,10 +16,11 @@
 #define GREEN_LED 21
 
 #define SERIAL_TX 1
+#define SERIAL_RX 0
 #define BUZZ_PIN SERIAL_TX
 
-#define GATE_PIN A5
-#define TRIG_PIN A6
+#define GATE_PIN 2
+#define TRIG_PIN 3
 
 #define POT_PIN A0
 

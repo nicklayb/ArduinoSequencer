@@ -23,7 +23,7 @@ void Sequencer::Sequence::initialize()
   }
   for (int i = 0; i < MAX_NOTES; i++)
   {
-    this->notes[i] = NOTE_MIDI_C5;
+    this->notes[i] = 0;
   }
 }
 

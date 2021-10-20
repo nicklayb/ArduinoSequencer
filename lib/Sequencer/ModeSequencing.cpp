@@ -5,30 +5,35 @@
 
 Sequencer::ModeSequencing::ModeSequencing() {}
 
-Sequencer::Mode<Sequencer::Application> *Sequencer::ModeSequencing::handle(Sequencer::Application *application)
+void Sequencer::ModeSequencing::setupMode(Sequencer::Application *application)
 {
-  application->getLedStrip()->lightUp(application->getSequence()->cursorPosition());
+  this->application = application;
+}
 
-  if (application->getController()->leftPressed())
+Sequencer::Mode<Sequencer::Application> *Sequencer::ModeSequencing::handle()
+{
+  this->application->getLedStrip()->lightUp(this->application->getSequence()->cursorPosition());
+
+  if (this->application->getController()->leftPressed())
   {
-    application->getSequence()->backward();
+    this->application->getSequence()->backward();
   }
 
-  if (application->getController()->rightPressed())
+  if (this->application->getController()->rightPressed())
   {
-    application->getSequence()->forward();
+    this->application->getSequence()->forward();
   }
 
-  if (application->getController()->playPressed())
+  if (this->application->getController()->playPressed())
   {
     return new Sequencer::ModePlay();
   }
 
-  if (application->getController()->modeSelectPressed())
+  if (this->application->getController()->modeSelectPressed())
   {
-    if (application->getSequence()->hasNote())
+    if (this->application->getSequence()->hasNote())
     {
-      int note = application->getSequence()->getNoteIndex();
+      int note = this->application->getSequence()->getNoteIndex();
       return new Sequencer::ModePitching(note);
     }
     else

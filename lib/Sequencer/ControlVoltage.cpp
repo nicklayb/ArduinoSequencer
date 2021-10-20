@@ -4,7 +4,7 @@
 
 #define NOTE_CHANNEL 0
 #define VELOCITY_CHANNEL 1
-#define VELOCITY 10
+#define VELOCITY 170
 #define NULL_VELOCITY 0
 
 #define NOTE_SF 47.069f

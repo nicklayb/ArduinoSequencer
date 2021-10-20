@@ -11,10 +11,12 @@ namespace Sequencer
   {
   private:
     Cursor cursor = Cursor(0b1);
+    Application *application;
 
   public:
     ModePitching(int note);
-    Mode<Application> *handle(Application *application);
+    void setupMode(Application *application);
+    Mode<Application> *handle();
   };
 }
 

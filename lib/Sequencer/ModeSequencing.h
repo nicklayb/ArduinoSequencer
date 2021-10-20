@@ -8,9 +8,13 @@ namespace Sequencer
 {
   class ModeSequencing : public Mode<Application>
   {
+  private:
+    Application *application;
+
   public:
     ModeSequencing();
-    Mode<Application> *handle(Application *application);
+    Mode<Application> *handle();
+    void setupMode(Application *application);
   };
 }
 

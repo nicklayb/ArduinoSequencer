@@ -7,6 +7,12 @@ Sequencer::IndividualLeds::IndividualLeds(int leds[STRIP_LENGTH])
   {
     this->leds[i] = leds[i];
     pinMode(this->leds[i], OUTPUT);
+    digitalWrite(this->leds[i], HIGH);
+    delay(100);
+  }
+  for (int i = 0; i < STRIP_LENGTH; i++)
+  {
+    digitalWrite(this->leds[i], LOW);
   }
 };
 

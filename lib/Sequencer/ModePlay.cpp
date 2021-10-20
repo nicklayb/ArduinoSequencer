@@ -1,62 +1,73 @@
 #include <ModePlay.h>
 #include <ModeSequencing.h>
+#include <MicrosecondClock.h>
+#include <MidiClock.h>
 #include <Application.h>
 
 Sequencer::ModePlay::ModePlay()
 {
-  this->clock = new Clock();
-  this->clock->setThreshold(CLOCK_THRESHOLD);
+  // this->clock = new Sequencer::MicrosecondClock(10, CLOCK_THRESHOLD, CLOCK_THRESHOLD);
+  this->clock = new Sequencer::MidiClock(SERIAL_RX);
+  this->clock->setHandler(this);
 }
 
-Sequencer::Mode<Sequencer::Application> *Sequencer::ModePlay::handle(Sequencer::Application *application)
+void Sequencer::ModePlay::setupMode(Sequencer::Application *application)
 {
-  this->readTempo(application->getController());
+  this->application = application;
+}
 
-  if (application->getController()->modeSelectPressed() || application->getController()->playPressed())
+Sequencer::Mode<Sequencer::Application> *Sequencer::ModePlay::handle()
+{
+  this->readTempo();
+
+  if (this->application->getController()->modeSelectPressed() || this->application->getController()->playPressed())
   {
-    application->getSequence()->resetCursor();
+    this->application->getSequence()->resetCursor();
     return new ModeSequencing();
+  }
+
+  this->clock->loop();
+
+  return NULL;
+}
+
+void Sequencer::ModePlay::readTempo()
+{
+  unsigned long tempo = this->application->getController()->readTempo();
+  this->clock->setTempo(tempo);
+}
+
+void Sequencer::ModePlay::handleClockStart() {}
+
+void Sequencer::ModePlay::handleClockCycleStart()
+{
+  if (this->application->getSequence()->sequenceAt(this->cursor) > 0)
+  {
+    int note = this->application->getNote(this->cursor);
+    this->application->getNoiseMaker()->makeNoise(note);
   }
   else
   {
-    application->getLedStrip()->lightUp(this->cursor.getPosition());
-
-    if (this->clock->reachedMaximum())
-    {
-      this->cursor.forward();
-    }
-
-    if (this->clock->reachedRiseThreshold())
-    {
-      application->getNoiseMaker()->riseThresholdReached();
-    }
-
-    if (this->clock->reachedFallThreshold())
-    {
-      application->getNoiseMaker()->fallThresholdReached();
-    }
-
-    if (this->clock->justStarted())
-    {
-      if (application->getSequence()->sequenceAt(this->cursor) > 0)
-      {
-        int note = application->getNote(this->cursor);
-        application->getNoiseMaker()->makeNoise(note);
-      }
-      else
-      {
-        application->getNoiseMaker()->fallThresholdReached();
-      }
-    }
-
-    this->clock->tick();
+    this->application->getNoiseMaker()->fallThresholdReached();
   }
+}
 
-  return NULL;
-};
-
-void Sequencer::ModePlay::readTempo(Sequencer::Controller *controller)
+void Sequencer::ModePlay::handleClockCycleStop()
 {
-  int maxLength = controller->readTempo();
-  this->clock->setMaximum(maxLength * CLOCK_MULTIPLIER);
+  this->cursor.forward();
+}
+
+void Sequencer::ModePlay::handleClockRise()
+{
+  this->application->getNoiseMaker()->riseThresholdReached();
+}
+
+void Sequencer::ModePlay::handleClockFall()
+{
+  this->application->getNoiseMaker()->fallThresholdReached();
+}
+
+void Sequencer::ModePlay::handleClockTick()
+{
+  this->application->getLedStrip()->lightUp(this->cursor.getPosition());
 }

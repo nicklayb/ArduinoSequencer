@@ -4,7 +4,6 @@
 #include <NoiseMaker.h>
 #include <Constants.h>
 #include <Pitches.h>
-#include <Clock.h>
 #include <LedStrip.h>
 #include <Pins.h>
 #include <Controller.h>
@@ -21,17 +20,19 @@ Application::Application(int *scale, LedStrip *ledStrip, Controller *controller,
   this->sequence = new Sequence(8);
   this->noiseMaker = noiseMaker;
   this->mode = new ModeSequencing();
+  this->mode->setupMode(this);
 }
 
 void Application::loop()
 {
   this->controller->read();
 
-  Mode<Application> *newMode = this->mode->handle(this);
+  Mode<Application> *newMode = this->mode->handle();
 
   if (newMode != NULL)
   {
     this->mode = newMode;
+    this->mode->setupMode(this);
     this->noiseMaker->fallThresholdReached();
   }
 

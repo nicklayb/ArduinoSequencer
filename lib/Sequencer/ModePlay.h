@@ -2,21 +2,31 @@
 #define SEQUENCER_MODE_PLAY_H
 
 #include <Mode.h>
+#include <ClockSource.h>
+#include <ClockHandler.h>
 #include <Cursor.h>
 #include <Application.h>
 
 namespace Sequencer
 {
-  class ModePlay : public Mode<Application>
+  class ModePlay : public Mode<Application>, public ClockHandler
   {
   private:
+    Application *application;
     Cursor cursor = Cursor(0b1);
-    Clock *clock;
-    void readTempo(Controller *controller);
+    ClockSource *clock;
+    void readTempo();
 
   public:
     ModePlay();
-    Mode<Application> *handle(Application *application);
+    Mode<Application> *handle();
+    void setupMode(Application *application);
+    void handleClockStart();
+    void handleClockCycleStart();
+    void handleClockCycleStop();
+    void handleClockRise();
+    void handleClockFall();
+    void handleClockTick();
   };
 }
 
