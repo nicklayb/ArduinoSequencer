@@ -120,6 +120,17 @@
     NOTE_MIDI_C5, NOTE_MIDI_D5, NOTE_MIDI_E5, NOTE_MIDI_F5, NOTE_MIDI_G5, NOTE_MIDI_A5, NOTE_MIDI_B5 \
   }
 
+#define F_MAJOR_SCALE_MIDI                                                                            \
+  {                                                                                                   \
+    NOTE_MIDI_F5, NOTE_MIDI_G5, NOTE_MIDI_A5, NOTE_MIDI_AS5, NOTE_MIDI_C6, NOTE_MIDI_D6, NOTE_MIDI_E6 \
+  }
+
+// D, E, F, G, A, B♭, and C
+
+#define D_MINOR_SCALE_MIDI                                                                            \
+  {                                                                                                   \
+    NOTE_MIDI_D4, NOTE_MIDI_E4, NOTE_MIDI_F4, NOTE_MIDI_G4, NOTE_MIDI_A4, NOTE_MIDI_AS4, NOTE_MIDI_C5 \
+  }
 int frequencyToMidiNote(int frequency);
 unsigned int midiNoteToVoltage(int midiNote);
 

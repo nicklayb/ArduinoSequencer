@@ -6,8 +6,8 @@
 
 Sequencer::ModePlay::ModePlay()
 {
-  // this->clock = new Sequencer::MicrosecondClock(10, CLOCK_THRESHOLD, CLOCK_THRESHOLD);
-  this->clock = new Sequencer::MidiClock(SERIAL_RX);
+  this->clock = new Sequencer::MicrosecondClock(10, CLOCK_THRESHOLD, CLOCK_THRESHOLD);
+  // this->clock = new Sequencer::MidiClock(SERIAL_RX);
   this->clock->setHandler(this);
 }
 
