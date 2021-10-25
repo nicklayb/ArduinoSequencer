@@ -9,6 +9,8 @@
 #include <Controller.h>
 #include <Sequence.h>
 #include <ModeSequencing.h>
+#include <ModePlay.h>
+#include <ModeRandom.h>
 
 using namespace Sequencer;
 
@@ -19,7 +21,7 @@ Application::Application(int *scale, LedStrip *ledStrip, Controller *controller,
   this->controller = controller;
   this->sequence = new Sequence(8);
   this->noiseMaker = noiseMaker;
-  this->mode = new ModeSequencing();
+  this->mode = new ModeRandom();
   this->mode->setupMode(this);
 }
 

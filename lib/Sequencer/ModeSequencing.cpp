@@ -1,6 +1,7 @@
 #include <ModeSequencing.h>
 #include <ModePitching.h>
 #include <ModePlay.h>
+#include <ModeRandom.h>
 #include <Application.h>
 
 Sequencer::ModeSequencing::ModeSequencing() {}
@@ -27,6 +28,11 @@ Sequencer::Mode<Sequencer::Application> *Sequencer::ModeSequencing::handle()
   if (this->application->getController()->playPressed())
   {
     return new Sequencer::ModePlay();
+  }
+
+  if (this->application->getController()->randomPressed())
+  {
+    return new Sequencer::ModeRandom();
   }
 
   if (this->application->getController()->modeSelectPressed())

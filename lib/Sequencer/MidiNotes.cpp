@@ -15,7 +15,7 @@ int frequencyToMidiNote(int frequency)
 }
 
 #define BASE_VOLTAGE 1000
-#define BASE_MIDI_NOTE 71
+#define BASE_MIDI_NOTE 72
 #define OCTAVE_LENGTH 12
 
 unsigned int midiNoteToVoltage(int midiNote)

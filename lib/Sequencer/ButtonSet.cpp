@@ -1,16 +1,20 @@
 #include <ButtonSet.h>
 #include <Button.h>
 #include <Potentiometer.h>
+#include <Constants.h>
 
-Sequencer::PotentiometerMap potMap{.outMinimum = 3, .outMaximum = 20};
+Sequencer::PotentiometerMap tempoPotentiometerMap{.outMinimum = TEMPO_POTENTIOMETER_MIN, .outMaximum = TEMPO_POTENTIOMETER_MAX};
+Sequencer::PotentiometerMap clockGatePotentiometerMap{.outMinimum = CLOCK_GATE_POTENTIOMETER_MIN, .outMaximum = CLOCK_GATE_POTENTIOMETER_MAX};
 
-Sequencer::ButtonSet::ButtonSet(int modeSelectPin, int leftPin, int rightPin, int playPin, int tempoPotPin)
+Sequencer::ButtonSet::ButtonSet(int modeSelectPin, int leftPin, int rightPin, int playPin, int tempoPotentiometerPin, int clockGatePotentiometerPin, int randomPin)
 {
   this->modeSelect = new Button(modeSelectPin);
   this->left = new Button(leftPin);
   this->right = new Button(rightPin);
   this->play = new Button(playPin);
-  this->tempoPotentiometer = new Sequencer::Potentiometer(tempoPotPin, potMap);
+  this->random = new Button(randomPin);
+  this->tempoPotentiometer = new Sequencer::Potentiometer(tempoPotentiometerPin, tempoPotentiometerMap);
+  this->clockGatePotentiometer = new Sequencer::Potentiometer(clockGatePotentiometerPin, clockGatePotentiometerMap);
 };
 
 bool Sequencer::ButtonSet::playPressed()
@@ -26,6 +30,11 @@ bool Sequencer::ButtonSet::rightPressed()
 bool Sequencer::ButtonSet::leftPressed()
 {
   return this->left->isPressed();
+};
+
+bool Sequencer::ButtonSet::randomPressed()
+{
+  return this->random->isPressed();
 };
 
 bool Sequencer::ButtonSet::modeSelectPressed()
@@ -52,4 +61,9 @@ void Sequencer::ButtonSet::release()
 int Sequencer::ButtonSet::readTempo()
 {
   return this->tempoPotentiometer->read();
+}
+
+int Sequencer::ButtonSet::readClockGate()
+{
+  return this->clockGatePotentiometer->read();
 }

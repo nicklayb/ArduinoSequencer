@@ -9,8 +9,6 @@ namespace Sequencer
   enum MicrosecondClockState
   {
     Started,
-    Risen,
-    Fallen,
     Stopped
   };
   class MicrosecondClock : public ClockSource
@@ -22,6 +20,9 @@ namespace Sequencer
     unsigned int riseThreshold;
     unsigned int fallThreshold;
     unsigned long tempo;
+    bool hasFallen = false;
+    bool hasRisen = false;
+    int clockGate;
     MicrosecondClockState state = Stopped;
     unsigned long diff();
     void cycleStart();
@@ -32,12 +33,14 @@ namespace Sequencer
     bool isFalling();
     bool cycleIsStarting();
     bool cycleIsStopping();
+    unsigned long clockGateLength();
 
   public:
-    MicrosecondClock(unsigned long tempo, unsigned int riseThreshold, unsigned int fallThreshold);
+    MicrosecondClock();
     void setHandler(ClockHandler *handler);
     void loop();
     void setTempo(unsigned long tempo);
+    void setClockGate(int clockGate);
   };
 }
 

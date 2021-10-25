@@ -1,5 +1,5 @@
-#ifndef SEQUENCER_MODE_PLAY_H
-#define SEQUENCER_MODE_PLAY_H
+#ifndef SEQUENCER_MODE_RANDOM_H
+#define SEQUENCER_MODE_RANDOM_H
 
 #include <ModeClocked.h>
 #include <ClockSource.h>
@@ -9,10 +9,13 @@
 
 namespace Sequencer
 {
-  class ModePlay : public ModeClocked
+  class ModeRandom : public ModeClocked
   {
+  private:
+    int randomIndex();
+
   public:
-    ModePlay();
+    ModeRandom();
     void handleClockCycleStart();
   };
 }

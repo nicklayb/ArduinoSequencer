@@ -10,9 +10,11 @@ namespace Sequencer
     virtual bool leftPressed();
     virtual bool rightPressed();
     virtual bool playPressed();
+    virtual bool randomPressed();
     virtual void read();
     virtual void release();
     virtual int readTempo();
+    virtual int readClockGate();
   };
 }
 

@@ -11,6 +11,7 @@ namespace Sequencer
     virtual void setHandler(ClockHandler *handler);
     virtual void loop();
     virtual void setTempo(unsigned long tempo);
+    virtual void setClockGate(int clockGate);
   };
 }
 

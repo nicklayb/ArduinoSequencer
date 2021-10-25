@@ -21,6 +21,8 @@ void Sequencer::MidiClock::setHandler(ClockHandler *handler)
 
 void Sequencer::MidiClock::setTempo(unsigned long tempo) {}
 
+void Sequencer::MidiClock::setTempo(int clockGate) {}
+
 void Sequencer::MidiClock::loop()
 {
   if (this->startOfBeat())

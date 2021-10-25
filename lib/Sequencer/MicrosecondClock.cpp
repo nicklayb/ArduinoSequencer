@@ -2,13 +2,17 @@
 #include <Arduino.h>
 #include <Constants.h>
 
-Sequencer::MicrosecondClock::MicrosecondClock(unsigned long tempo, unsigned int riseThreshold, unsigned int fallThreshold)
+#define CLOCK_MULTIPLIER 50000
+#define CLOCK_THRESHOLD 1000
+#define RISE_MULTIPLIER 2000
+#define FALL_MULTIPLER 500
+
+Sequencer::MicrosecondClock::MicrosecondClock()
 {
   this->reference = micros();
   this->current = this->reference;
-  this->riseThreshold = riseThreshold;
-  this->fallThreshold = fallThreshold;
-  this->setTempo(tempo);
+  this->setTempo(TEMPO_POTENTIOMETER_MIN);
+  this->setClockGate(CLOCK_GATE_POTENTIOMETER_MAX);
 }
 
 void Sequencer::MicrosecondClock::setHandler(ClockHandler *handler)
@@ -46,8 +50,17 @@ void Sequencer::MicrosecondClock::loop()
 void Sequencer::MicrosecondClock::setTempo(unsigned long tempo)
 {
   this->tempo = tempo * CLOCK_MULTIPLIER;
-  this->riseThreshold = 2000 * tempo;
-  this->fallThreshold = 1000 * tempo;
+  this->riseThreshold = 10000;
+}
+
+void Sequencer::MicrosecondClock::setClockGate(int clockGate)
+{
+  this->fallThreshold = clockGate;
+}
+
+unsigned long Sequencer::MicrosecondClock::clockGateLength()
+{
+  return ((float)this->fallThreshold / (float)(CLOCK_GATE_POTENTIOMETER_MAX + 1)) * (this->tempo - CLOCK_THRESHOLD);
 }
 
 unsigned long Sequencer::MicrosecondClock::diff()
@@ -67,28 +80,30 @@ void Sequencer::MicrosecondClock::cycleStop()
   this->state = Stopped;
   this->reference = micros();
   this->current = this->reference;
+  this->hasRisen = false;
+  this->hasFallen = false;
 }
 
 void Sequencer::MicrosecondClock::rise()
 {
   this->handler->handleClockRise();
-  this->state = Risen;
+  this->hasRisen = true;
 }
 
 void Sequencer::MicrosecondClock::fall()
 {
   this->handler->handleClockFall();
-  this->state = Fallen;
+  this->hasFallen = true;
 }
 
 bool Sequencer::MicrosecondClock::isRising()
 {
-  return this->state == Started && this->diff() >= this->riseThreshold;
+  return !this->hasRisen && this->diff() >= this->riseThreshold;
 }
 
 bool Sequencer::MicrosecondClock::isFalling()
 {
-  return this->state == Risen && this->diff() >= this->tempo - this->fallThreshold;
+  return !this->hasFallen && this->diff() >= this->clockGateLength();
 }
 
 bool Sequencer::MicrosecondClock::cycleIsStarting()
@@ -98,5 +113,5 @@ bool Sequencer::MicrosecondClock::cycleIsStarting()
 
 bool Sequencer::MicrosecondClock::cycleIsStopping()
 {
-  return this->state == Fallen && this->diff() >= this->tempo;
+  return this->state == Started && this->diff() >= this->tempo;
 }
