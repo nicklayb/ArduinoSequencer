@@ -14,8 +14,6 @@ Sequencer::Cursor::Cursor(int initialCursor, int maxLength)
 void Sequencer::Cursor::forward()
 {
   this->cursor = this->cursor << 1;
-  Serial.print("Cursor: ");
-  Serial.println(this->cursor);
   this->cycle();
 };
 

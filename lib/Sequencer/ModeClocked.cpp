@@ -33,16 +33,12 @@ Sequencer::Mode<Sequencer::Application> *Sequencer::ModeClocked::handle()
 
 void Sequencer::ModeClocked::readTempo()
 {
-  this->clock->setTempo(4);
-  return;
   unsigned long tempo = this->application->getController()->readTempo();
   this->clock->setTempo(tempo);
 }
 
 void Sequencer::ModeClocked::readClockGate()
 {
-  this->clock->setClockGate(4);
-  return;
   unsigned int clockGate = this->application->getController()->readClockGate();
   this->clock->setClockGate(clockGate);
 }

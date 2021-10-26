@@ -40,7 +40,7 @@ namespace Sequencer
     void setHandler(ClockHandler *handler);
     void loop();
     void setTempo(unsigned long tempo);
-    void setClockGate(int clockGate);
+    void setClockGate(unsigned int clockGate);
   };
 }
 

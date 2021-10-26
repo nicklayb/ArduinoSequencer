@@ -53,7 +53,7 @@ void Sequencer::MicrosecondClock::setTempo(unsigned long tempo)
   this->riseThreshold = 10000;
 }
 
-void Sequencer::MicrosecondClock::setClockGate(int clockGate)
+void Sequencer::MicrosecondClock::setClockGate(unsigned int clockGate)
 {
   this->fallThreshold = clockGate;
 }

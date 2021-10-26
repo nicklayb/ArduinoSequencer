@@ -23,7 +23,7 @@ void Sequencer::Multiplexed8Bit::lightUp(int byte)
 void Sequencer::Multiplexed8Bit::lightUp(int byte, bool inverted)
 {
   int *row = this->getRow(inverted);
-  int multiplexerBits = inputByteToMultiplexerBits(byte, STRIP_LENGTH);
+  int multiplexerBits = inputByteToMultiplexerBits(byte, STRIP_LENGTH) - 1;
   int checkByte = 0b1;
 
   for (int i = 0; i < INPUT_BITS; i++)

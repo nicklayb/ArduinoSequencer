@@ -23,10 +23,10 @@ Sequencer::Application *application;
 
 void setup()
 {
-  Sequencer::FakeController *controller = new Sequencer::FakeController(A2, A3);
+  Sequencer::FakeController *controller = new Sequencer::FakeController(TEMPO_POT_PIN, CLOCK_GATE_POT_PIN);
   Sequencer::ControlVoltage *controlVoltage = new Sequencer::ControlVoltage(DIGITAL_ANALOG_CONVERTER_1, TRIG_PIN, GATE_PIN);
   Sequencer::LedStrip *ledStrip = new Sequencer::Multiplexed8Bit(bottomLeds, bottomLeds);
-  application = new Sequencer::Application(scale, ledStrip, controller, controlVoltage);
+  application = new Sequencer::Application(scale, ledStrip, controller, controlVoltage, new Sequencer::ModeKnob(A0));
 }
 
 void loop()

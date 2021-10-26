@@ -26,11 +26,11 @@
 #define SERIAL_RX 0
 #define BUZZ_PIN SERIAL_TX
 
-#define GATE_PIN 2
-#define TRIG_PIN 3
+#define GATE_PIN 5
+#define TRIG_PIN 6
 
 #define TEMPO_POT_PIN A6
-#define CLOCK_GATE_POT_PIN A7
+#define CLOCK_GATE_POT_PIN A5
 
 #define RED_BTN A4
 #define YELLOW_BTN A3
