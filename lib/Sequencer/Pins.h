@@ -10,9 +10,9 @@
 #define LED_6 10
 #define LED_7 12
 
-#define MUX_1_1 2
-#define MUX_1_2 3
-#define MUX_1_3 4
+#define MUX_1_1 7
+#define MUX_1_2 10
+#define MUX_1_3 12
 #define MUX_2_1 4
 #define MUX_2_2 5
 #define MUX_2_3 6
