@@ -33,12 +33,16 @@ Sequencer::Mode<Sequencer::Application> *Sequencer::ModeClocked::handle()
 
 void Sequencer::ModeClocked::readTempo()
 {
+  this->clock->setTempo(4);
+  return;
   unsigned long tempo = this->application->getController()->readTempo();
   this->clock->setTempo(tempo);
 }
 
 void Sequencer::ModeClocked::readClockGate()
 {
+  this->clock->setClockGate(4);
+  return;
   unsigned int clockGate = this->application->getController()->readClockGate();
   this->clock->setClockGate(clockGate);
 }
@@ -50,6 +54,7 @@ void Sequencer::ModeClocked::handleClockCycleStart() {}
 void Sequencer::ModeClocked::handleClockCycleStop()
 {
   this->cursor.forward();
+  this->application->getLedStrip()->lightUp(this->cursor.getPosition());
 }
 
 void Sequencer::ModeClocked::handleClockRise()
@@ -64,7 +69,6 @@ void Sequencer::ModeClocked::handleClockFall()
 
 void Sequencer::ModeClocked::handleClockTick()
 {
-  this->application->getLedStrip()->lightUp(this->cursor.getPosition());
 }
 
 Sequencer::ClockSource *Sequencer::ModeClocked::getClock()

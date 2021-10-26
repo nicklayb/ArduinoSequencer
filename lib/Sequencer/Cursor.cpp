@@ -1,5 +1,6 @@
 #include <Cursor.h>
 #include <Constants.h>
+#include <Arduino.h>
 
 Sequencer::Cursor::Cursor(int initialCursor) : Sequencer::Cursor::Cursor(initialCursor, 0b10000000){};
 
@@ -13,6 +14,8 @@ Sequencer::Cursor::Cursor(int initialCursor, int maxLength)
 void Sequencer::Cursor::forward()
 {
   this->cursor = this->cursor << 1;
+  Serial.print("Cursor: ");
+  Serial.println(this->cursor);
   this->cycle();
 };
 

@@ -1,5 +1,6 @@
 #include <Multiplexed8Bit.h>
 #include <Arduino.h>
+#include <Binary.h>
 
 Sequencer::Multiplexed8Bit::Multiplexed8Bit(int topRow[INPUT_BITS], int bottomRow[INPUT_BITS])
 {
@@ -22,7 +23,7 @@ void Sequencer::Multiplexed8Bit::lightUp(int byte)
 void Sequencer::Multiplexed8Bit::lightUp(int byte, bool inverted)
 {
   int *row = this->getRow(inverted);
-  int multiplexerBits = this->inputByteToMultiplexerBits(byte);
+  int multiplexerBits = inputByteToMultiplexerBits(byte, STRIP_LENGTH);
   int checkByte = 0b1;
 
   for (int i = 0; i < INPUT_BITS; i++)
@@ -41,18 +42,4 @@ int *Sequencer::Multiplexed8Bit::getRow(bool inverted)
     return this->bottomRow;
   }
   return this->topRow;
-}
-
-int Sequencer::Multiplexed8Bit::inputByteToMultiplexerBits(int byte)
-{
-  int checkByte = 0b1;
-  for (int i = 1; i <= STRIP_LENGTH; i++)
-  {
-    if ((byte & checkByte) > 0)
-    {
-      return i;
-    }
-    checkByte = checkByte << 1;
-  }
-  return 0;
 }

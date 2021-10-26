@@ -8,21 +8,26 @@
 #include <Pins.h>
 #include <Controller.h>
 #include <Sequence.h>
+#include <Mode.h>
 #include <ModeSequencing.h>
 #include <ModePlay.h>
 #include <ModeRandom.h>
 
 using namespace Sequencer;
 
-Application::Application(int *scale, LedStrip *ledStrip, Controller *controller, NoiseMaker *noiseMaker)
+Application::Application(int *scale, LedStrip *ledStrip, Controller *controller, NoiseMaker *noiseMaker, Mode<Application> *mode)
 {
   this->scale = scale;
   this->ledStrip = ledStrip;
   this->controller = controller;
   this->sequence = new Sequence(8);
   this->noiseMaker = noiseMaker;
-  this->mode = new ModeRandom();
+  this->mode = mode;
   this->mode->setupMode(this);
+}
+
+Application::Application(int *scale, LedStrip *ledStrip, Controller *controller, NoiseMaker *noiseMaker) : Application(scale, ledStrip, controller, noiseMaker, new ModeRandom())
+{
 }
 
 void Application::loop()

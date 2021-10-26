@@ -12,6 +12,7 @@
 #include <ControlVoltage.h>
 #include <Controller.h>
 #include <Application.h>
+#include <ModeKnob.h>
 
 int scale[] = D_MINOR_SCALE_MIDI;
 // int leds[] = {LED_0, LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7};
@@ -30,7 +31,7 @@ void setup()
   Sequencer::MultiNoiseMaker *noiseMaker = new Sequencer::MultiNoiseMaker(midiOut, controlVoltage);
   //Sequencer::SerialNoiseMaker *serial = new Sequencer::SerialNoiseMaker();
   //Sequencer::MultiNoiseMaker *noiseMaker = new Sequencer::MultiNoiseMaker(serial, controlVoltage);
-  application = new Sequencer::Application(scale, ledStrip, controller, noiseMaker);
+  application = new Sequencer::Application(scale, ledStrip, controller, noiseMaker, new ModeKnob(A0));
 }
 
 void loop()

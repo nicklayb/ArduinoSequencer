@@ -13,7 +13,6 @@ namespace Sequencer
   private:
     int topRow[INPUT_BITS];
     int bottomRow[INPUT_BITS];
-    int inputByteToMultiplexerBits(int byte);
     int *getRow(bool inverted);
 
   public:

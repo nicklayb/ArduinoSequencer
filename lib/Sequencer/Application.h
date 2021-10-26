@@ -19,7 +19,6 @@ namespace Sequencer
   private:
     int *scale;
     Controller *controller;
-    Cursor cursor = Cursor(0b1);
     LedStrip *ledStrip;
     NoiseMaker *noiseMaker;
     Sequence *sequence;
@@ -27,6 +26,7 @@ namespace Sequencer
 
   public:
     Application(int *scale, LedStrip *ledStrip, Controller *controller, NoiseMaker *noiseMaker);
+    Application(int *scale, LedStrip *ledStrip, Controller *controller, NoiseMaker *noiseMaker, Mode<Application> *mode);
     void loop();
     Sequence *getSequence();
     LedStrip *getLedStrip();
