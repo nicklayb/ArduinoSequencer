@@ -1,12 +1,14 @@
 #include <ModeClocked.h>
 #include <ModeSequencing.h>
 #include <MicrosecondClock.h>
+#include <ExternalClock.h>
 #include <MidiClock.h>
 #include <Application.h>
+#include <Pins.h>
 
 Sequencer::ModeClocked::ModeClocked()
 {
-  this->clock = new Sequencer::MicrosecondClock();
+  this->clock = new Sequencer::ExternalClock(EXTERNAL_CLOCK_PIN);
   this->clock->setHandler(this);
 }
 

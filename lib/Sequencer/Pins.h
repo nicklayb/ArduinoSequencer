@@ -43,4 +43,6 @@
 #define MODE_SELECT_PIN RED_BTN
 #define RANDOM_PIN A0
 
+#define EXTERNAL_CLOCK_PIN A7
+
 #endif
